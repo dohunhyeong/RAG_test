@@ -58,7 +58,7 @@ DB_path = './chroma_db'
 def create_retriever():
     persist_db = Chroma(
         persist_directory= DB_path,
-        embedding_function=OpenAIEmbeddings(),
+        embedding_function=OpenAIEmbeddings(openai_api_key =st.session_state['api_key']),
         collection_name='my_db'
         )
     retriever = persist_db.as_retriever()
