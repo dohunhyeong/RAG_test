@@ -6,15 +6,8 @@ from langchain_teddynote.prompts import load_prompt
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-from langchain_teddynote import logging
-from dotenv import load_dotenv
 from langchain_chroma import Chroma
-from langchain_ollama import ChatOllama
 
-
-
-# 프로젝트 이름을 입력합니다.
-logging.langsmith("dohun_project_test")
 
 st.title("법정감염병 Q&A 💬")
 
