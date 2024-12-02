@@ -19,9 +19,12 @@ openai_api_key = st.secrets["api_keys"]["openai"]
 pinecone_api_key = st.secrets["api_keys"]["pinecone"]
 
 
-# Pickle 데이터 로드
-sparse_encoder = pickle.loads(base64.b64decode(st.secrets["pickle_data"]["sparse_encoder"]))
-
+# sparse_encoder 디코딩 부분을 try-except로 감싸서 오류 확인
+try:
+    sparse_encoder = pickle.loads(base64.b64decode(st.secrets["pickle_data"]["sparse_encoder"]))
+    st.write("Sparse encoder loaded successfully")  # 디버깅용
+except Exception as e:
+    st.error(f"Error loading sparse encoder: {str(e)}")
 
 # 처음 1번만 실행하기 위한 코드
 if "messages" not in st.session_state:
@@ -64,8 +67,18 @@ def create_retriever():
     alpha=0.5,  # alpha=0.75로 설정한 경우, (0.75: Dense Embedding, 0.25: Sparse Embedding)
     )
     
-    pinecone_retriever = PineconeKiwiHybridRetriever(**pinecone_params)
-    return pinecone_retriever
+    # 디버깅을 위해 파라미터 출력 (민감정보는 제외)
+    debug_params = {k: v for k, v in pinecone_params.items() 
+                   if k not in ['api_key', 'sparse_encoder_path']}
+    st.write("Pinecone parameters:", debug_params)
+    
+    try:
+        pinecone_retriever = PineconeKiwiHybridRetriever(**pinecone_params)
+        st.write("Retriever created successfully")  # 디버깅용
+        return pinecone_retriever
+    except Exception as e:
+        st.error(f"Error creating retriever: {str(e)}")
+        raise
 
 
 # 체인 생성
