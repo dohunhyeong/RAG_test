@@ -59,7 +59,7 @@ def create_retriever():
     sparse_encoder_path=sparse_encoder,  # Sparse Encoder 저장경로(save_path)
     stopwords=stopwords(),  # 불용어 사전
     tokenizer="kiwi",
-    embeddings= OpenAIEmbeddings(), # Dense Embedder
+    embeddings= OpenAIEmbeddings(openai_api_key=openai_api_key), # Dense Embedder
     top_k=3,  # Top-K 문서 반환 개수
     alpha=0.5,  # alpha=0.75로 설정한 경우, (0.75: Dense Embedding, 0.25: Sparse Embedding)
     )
